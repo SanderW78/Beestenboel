@@ -1,0 +1,233 @@
+/* Beestenboel 2.0 — fase 2: Professor Decibel als showmaster */
+:root {
+  --pd-stage-gold: #ffd84d;
+  --pd-stage-red: #ff3158;
+  --pd-stage-blue: #33d8ff;
+}
+
+.professor-decibel {
+  --pd-scale: 1;
+  position: fixed;
+  z-index: 120;
+  left: clamp(10px, 2.3vw, 30px);
+  bottom: clamp(12px, 2.2vh, 28px);
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  transform-origin: left bottom;
+  transition: opacity .3s ease, transform .45s cubic-bezier(.2,.9,.2,1), filter .35s ease;
+}
+
+.professor-decibel.pd-host-hidden {
+  opacity: 0;
+  transform: translateX(-130%) scale(.75);
+  pointer-events: none;
+}
+
+.professor-decibel.pd-host-enter {
+  animation: pdHostEntrance 1.1s cubic-bezier(.16,.88,.2,1.15) both;
+}
+
+.professor-decibel.pd-host-wave .pd-avatar {
+  animation: pdHostWave 1.25s ease-in-out both;
+}
+
+.professor-decibel.pd-host-wave .pd-avatar::after {
+  content: '👋';
+  position: absolute;
+  right: -6px;
+  top: 8%;
+  font-size: clamp(30px, 5vw, 54px);
+  transform-origin: 20% 80%;
+  animation: pdHandWave .28s ease-in-out 4 alternate;
+  filter: drop-shadow(0 4px 3px rgba(0,0,0,.35));
+}
+
+.professor-decibel.pd-host-announce {
+  transform: translateX(0) scale(1.1);
+  filter: drop-shadow(0 0 24px rgba(255,216,77,.55));
+}
+
+.professor-decibel.pd-host-announce .pd-bubble {
+  border-color: var(--pd-stage-gold);
+  box-shadow: 0 0 0 4px rgba(255,216,77,.18), 0 18px 46px rgba(0,0,0,.34);
+}
+
+.professor-decibel.pd-host-celebrate .pd-avatar {
+  animation: pdHostCelebrate .58s ease-in-out 3;
+}
+
+.professor-decibel.pd-host-shocked .pd-avatar {
+  animation: pdHostShock .55s cubic-bezier(.2,.9,.3,1.4) both;
+}
+
+.professor-decibel.pd-host-bow .pd-avatar {
+  animation: pdHostBow 1.2s ease-in-out both;
+}
+
+.pd-bubble {
+  max-width: min(350px, calc(100vw - 155px));
+  background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(239,247,255,.96));
+  border: 3px solid rgba(12,22,54,.92);
+  box-shadow: 0 14px 38px rgba(0,0,0,.3);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+
+.pd-bubble strong::after {
+  content: ' · SHOWMASTER';
+  color: #d0173d;
+  font-size: .64em;
+  letter-spacing: .09em;
+}
+
+/* Beeldvullende kandidaat-aankondiging */
+.pd-player-intro {
+  position: fixed;
+  z-index: 116;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 55%, rgba(255,216,77,.22), transparent 33%),
+    linear-gradient(110deg, rgba(4,7,23,.96), rgba(19,12,57,.93), rgba(3,15,36,.96));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .22s ease, visibility .22s step-end;
+  overflow: hidden;
+}
+
+.pd-player-intro::before,
+.pd-player-intro::after {
+  content: '';
+  position: absolute;
+  top: -18%;
+  width: 33vw;
+  height: 140%;
+  background: linear-gradient(to bottom, rgba(255,255,255,.48), rgba(51,216,255,.04) 70%);
+  clip-path: polygon(47% 0, 54% 0, 100% 100%, 0 100%);
+  mix-blend-mode: screen;
+  filter: blur(7px);
+}
+
+.pd-player-intro::before { left: 3%; transform: rotate(-19deg); }
+.pd-player-intro::after { right: 3%; transform: rotate(19deg); }
+
+.pd-player-intro.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .22s ease;
+}
+
+.pd-player-card {
+  position: relative;
+  z-index: 2;
+  width: min(760px, 92vw);
+  text-align: center;
+  color: white;
+  transform: scale(.62) translateY(30px);
+  opacity: 0;
+}
+
+.pd-player-intro.is-visible .pd-player-card {
+  animation: pdPlayerCardIn .72s cubic-bezier(.17,.86,.22,1.14) .12s both;
+}
+
+.pd-player-kicker {
+  font: 800 clamp(.78rem, 2.1vw, 1.1rem)/1 Montserrat, sans-serif;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--pd-stage-gold);
+  margin-bottom: 18px;
+}
+
+.pd-player-name {
+  font: 400 clamp(4rem, 15vw, 9.4rem)/.82 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+  text-shadow: 0 5px 0 #cc1942, 0 12px 30px rgba(0,0,0,.7), 0 0 42px rgba(51,216,255,.4);
+  overflow-wrap: anywhere;
+}
+
+.pd-player-applause {
+  margin-top: 26px;
+  font-size: clamp(1.55rem, 5vw, 3.1rem);
+  letter-spacing: .2em;
+  animation: pdApplausePulse .55s ease-in-out infinite alternate;
+}
+
+.pd-host-caption {
+  position: fixed;
+  z-index: 119;
+  left: 50%;
+  bottom: clamp(22px, 5vh, 54px);
+  transform: translate(-50%, 25px);
+  min-width: min(560px, 88vw);
+  max-width: 92vw;
+  padding: 13px 22px;
+  border: 2px solid rgba(255,255,255,.55);
+  border-radius: 999px;
+  background: rgba(4,8,29,.88);
+  backdrop-filter: blur(12px);
+  color: white;
+  text-align: center;
+  font: 800 clamp(.85rem, 2.4vw, 1.08rem)/1.3 Montserrat, sans-serif;
+  letter-spacing: .02em;
+  box-shadow: 0 12px 34px rgba(0,0,0,.42);
+  opacity: 0;
+  visibility: hidden;
+  transition: .25s ease;
+  pointer-events: none;
+}
+
+.pd-host-caption.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+body.pd-host-focus .app {
+  filter: brightness(.53) blur(1.5px);
+  transform: scale(.985);
+}
+
+body.pd-host-focus .studio-led-wall,
+body.pd-host-focus .show-lights {
+  filter: brightness(1.38) saturate(1.25);
+}
+
+@keyframes pdHostEntrance {
+  0% { opacity: 0; transform: translateX(-145%) rotate(-9deg) scale(.7); }
+  65% { opacity: 1; transform: translateX(8%) rotate(2deg) scale(1.08); }
+  82% { transform: translateX(-3%) rotate(-1deg) scale(.98); }
+  100% { opacity: 1; transform: translateX(0) rotate(0) scale(1); }
+}
+
+@keyframes pdHostWave {
+  0%,100% { transform: rotate(0) translateY(0); }
+  30% { transform: rotate(-4deg) translateY(-7px); }
+  65% { transform: rotate(4deg) translateY(-3px); }
+}
+
+@keyframes pdHandWave { from { transform: rotate(-22deg); } to { transform: rotate(24deg); } }
+@keyframes pdHostCelebrate { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-15px) rotate(5deg) scale(1.06); } }
+@keyframes pdHostShock { 0% { transform: scale(1); } 45% { transform: scale(1.18) rotate(-5deg); } 100% { transform: scale(1); } }
+@keyframes pdHostBow { 0%,100% { transform: rotate(0); } 55% { transform: rotate(13deg) translateY(8px); } }
+@keyframes pdPlayerCardIn { 0% { opacity:0; transform:scale(.62) translateY(30px); } 70% { opacity:1; transform:scale(1.07) translateY(-5px); } 100% { opacity:1; transform:scale(1) translateY(0); } }
+@keyframes pdApplausePulse { from { transform: scale(.94); opacity:.72; } to { transform: scale(1.06); opacity:1; } }
+
+@media (max-width: 680px) {
+  .professor-decibel { left: 8px; bottom: 8px; gap: 6px; }
+  .professor-decibel.pd-host-announce { transform: scale(1.02); }
+  .pd-bubble { max-width: calc(100vw - 118px); padding: 9px 11px; }
+  .pd-bubble strong::after { display: none; }
+  .pd-host-caption { bottom: 12px; border-radius: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .professor-decibel,
+  .professor-decibel .pd-avatar,
+  .pd-player-card,
+  .pd-player-applause { animation: none !important; transition-duration: .01ms !important; }
+}
