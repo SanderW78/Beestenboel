@@ -66,4 +66,18 @@
       }
     }).observe(endScreen, { attributes: true, attributeFilter: ['class'] });
   }
+
+  // Sprint 14 is loaded here so the existing page does not need another manual edit.
+  if (!document.querySelector('link[href="assets/gameplay-sprint14.css"]')) {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = 'assets/gameplay-sprint14.css';
+    document.head.appendChild(style);
+  }
+  if (!document.querySelector('script[src="assets/gameplay-sprint14.js"]')) {
+    const script = document.createElement('script');
+    script.src = 'assets/gameplay-sprint14.js';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
 })();
