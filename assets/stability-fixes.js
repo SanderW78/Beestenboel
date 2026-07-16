@@ -7,7 +7,31 @@
     .trim()
     .slice(0, 14);
 
-  // Prevent player names from becoming executable markup in scoreboards and summaries.
+  const activeMedia = new Set();
+  const nativePlay = HTMLMediaElement.prototype.play;
+  const nativePause = HTMLMediaElement.prototype.pause;
+
+  HTMLMediaElement.prototype.play = function trackedPlay() {
+    activeMedia.add(this);
+    this.addEventListener('ended', () => activeMedia.delete(this), { once: true });
+    return nativePlay.apply(this, arguments);
+  };
+
+  HTMLMediaElement.prototype.pause = function trackedPause() {
+    activeMedia.delete(this);
+    return nativePause.apply(this, arguments);
+  };
+
+  function stopAllMedia() {
+    activeMedia.forEach((media) => {
+      try {
+        nativePause.call(media);
+        media.currentTime = 0;
+      } catch (_) {}
+    });
+    activeMedia.clear();
+  }
+
   if (typeof voegToe === 'function') {
     const originalVoegToe = voegToe;
     voegToe = function safeVoegToe() {
@@ -15,6 +39,20 @@
       if (input) input.value = cleanPlayerName(input.value);
       return originalVoegToe.apply(this, arguments);
     };
+  }
+
+  function sanitizeExistingPlayers() {
+    try {
+      if (!Array.isArray(S?.spelers)) return;
+      S.spelers = S.spelers
+        .filter((player) => player && typeof player === 'object')
+        .slice(0, 8)
+        .map((player, index) => ({
+          ...player,
+          naam: cleanPlayerName(player.naam) || `Speler ${index + 1}`,
+          score: Number.isFinite(Number(player.score)) ? Number(player.score) : 0,
+        }));
+    } catch (_) {}
   }
 
   function stopMicrophone() {
@@ -52,29 +90,54 @@
   }
 
   function cleanupResources() {
+    stopAllMedia();
     stopMicrophone();
     releaseWakeLock();
     revokeLastRecording();
   }
 
+  function showRuntimeMessage(title, message) {
+    if (document.querySelector('[data-runtime-alert]')) return;
+    const panel = document.createElement('section');
+    panel.className = 'kaart';
+    panel.dataset.runtimeAlert = 'true';
+    panel.setAttribute('role', 'alert');
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    const text = document.createElement('p');
+    text.textContent = message;
+    panel.append(heading, text);
+    document.querySelector('.app')?.prepend(panel);
+  }
+
   window.addEventListener('pagehide', cleanupResources);
   window.addEventListener('beforeunload', cleanupResources);
+  window.addEventListener('offline', () => showRuntimeMessage(
+    'Geen internetverbinding',
+    'Het huidige scherm blijft werken, maar nog niet geladen geluiden kunnen tijdelijk ontbreken.'
+  ));
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
+      stopAllMedia();
       releaseWakeLock();
     }
   });
 
-  // A failed or missing main bundle should produce a visible error instead of a dead screen.
   window.addEventListener('load', () => {
+    sanitizeExistingPlayers();
     window.setTimeout(() => {
       if (typeof S === 'undefined' || typeof tekenSpelers !== 'function') {
-        const panel = document.createElement('section');
-        panel.className = 'kaart';
-        panel.setAttribute('role', 'alert');
-        panel.innerHTML = '<h2>Het spel kon niet worden geladen</h2><p>Ververs de pagina. Blijft dit gebeuren, controleer dan of assets/game.js beschikbaar is.</p>';
-        document.querySelector('.app')?.prepend(panel);
+        showRuntimeMessage(
+          'Het spel kon niet worden geladen',
+          'Ververs de pagina. Blijft dit gebeuren, controleer dan of assets/game.js beschikbaar is.'
+        );
+        return;
+      }
+      try {
+        tekenSpelers();
+      } catch (error) {
+        console.warn('Spelers konden niet opnieuw worden getekend.', error);
       }
     }, 300);
   });
