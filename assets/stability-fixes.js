@@ -39,6 +39,11 @@
       if (input) input.value = cleanPlayerName(input.value);
       return originalVoegToe.apply(this, arguments);
     };
+    // game.js bond de knop met een directe referentie aan de originele
+    // functie (onclick = voegToe), waardoor de opschoning daar werd
+    // omzeild. Opnieuw binden zodat de wrapper op beide routes draait.
+    const addButton = document.getElementById('btn-voeg-toe');
+    if (addButton) addButton.onclick = () => voegToe();
   }
 
   function sanitizeExistingPlayers() {

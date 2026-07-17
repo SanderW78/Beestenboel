@@ -261,7 +261,9 @@ const ShowIntelligence = {
   async showStandings(duur=2600){
     const box=$("live-standings"), list=$("standing-list"); if(!box||!list)return;
     const medals=["🥇","🥈","🥉"]; list.innerHTML="";
-    this.ranking().forEach((sp,i)=>{ const row=document.createElement("div"); row.className="standing-row"+(i===0?" leider":"");row.style.setProperty("--delay",`${i*80}ms`);row.innerHTML=`<span class="rank">${medals[i]||i+1+"."}</span><span class="name">${sp.naam}</span><span class="total">${sp.score}</span>`;list.appendChild(row); });
+    this.ranking().forEach((sp,i)=>{ const row=document.createElement("div"); row.className="standing-row"+(i===0?" leider":"");row.style.setProperty("--delay",`${i*80}ms`);
+      for(const [cls,txt] of [["rank",medals[i]||i+1+"."],["name",sp.naam],["total",String(sp.score)]]){ const s=document.createElement("span"); s.className=cls; s.textContent=txt; row.appendChild(s); }
+      list.appendChild(row); });
     box.setAttribute("aria-hidden","false");requestAnimationFrame(()=>box.classList.add("zichtbaar"));await wacht(duur);box.classList.remove("zichtbaar");await wacht(420);box.setAttribute("aria-hidden","true");
   },
   summary(){
@@ -749,7 +751,9 @@ function tekenSpelers(){
   S.spelers.forEach((sp,i)=>{
     const d = document.createElement("div");
     d.className = "speler-item";
-    d.innerHTML = `<span>${["🐮","🐱","🐶","🐔","🐑","🦉","🐸","🐷"][i%8]} ${sp.naam}</span>`;
+    const naamSpan = document.createElement("span");
+    naamSpan.textContent = `${["🐮","🐱","🐶","🐔","🐑","🦉","🐸","🐷"][i%8]} ${sp.naam}`;
+    d.appendChild(naamSpan);
     const b = document.createElement("button");
     b.textContent = "✕";
     b.onclick = ()=>{ S.spelers.splice(i,1); tekenSpelers(); };
@@ -1286,7 +1290,9 @@ function toonEinde(){
   lijst.forEach((sp,i)=>{
     const d = document.createElement("div");
     d.className = "eind-item" + (i===0?" winnaar":"");
-    d.innerHTML = `<span class="plek">${i===0?"🐐":i+1+"."}</span><span>${sp.naam}${i===0?" — de Gouden Geit!":""}</span><span class="pts">${sp.score} pt</span>`;
+    for(const [cls,txt] of [["plek",i===0?"🐐":i+1+"."],["",sp.naam+(i===0?" — de Gouden Geit!":"")],["pts",`${sp.score} pt`]]){
+      const s=document.createElement("span"); if(cls)s.className=cls; s.textContent=txt; d.appendChild(s);
+    }
     el.appendChild(d);
     setTimeout(()=>d.classList.add("reveal"),180+i*130);
   });
