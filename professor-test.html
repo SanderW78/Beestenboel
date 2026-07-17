@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professor Decibel — karaktertest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/professor-test.css">
+</head>
+<body>
+  <main class="test-shell">
+    <header class="test-header">
+      <p class="eyebrow">Beestenboel · afgeschermde ontwikkelomgeving</p>
+      <h1>Professor Decibel</h1>
+      <p>Deze pagina staat volledig los van het spel. Animatie, formaat en compositie kunnen hier worden ontwikkeld zonder de spelmotor te raken.</p>
+    </header>
+
+    <section class="stage" aria-label="Testpodium Professor Decibel">
+      <div class="stage-lights" aria-hidden="true"></div>
+      <div class="stage-logo">BEESTENBOEL</div>
+      <div class="host" id="host" data-pose="idle">
+        <img src="professor-decibel.webp" alt="Professor Decibel">
+      </div>
+      <div class="lower-third" id="lower-third">
+        <strong>Professor Decibel</strong>
+        <span>Presentator van Beestenboel</span>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="Karaktertests">
+      <button type="button" data-action="enter">Binnenlopen</button>
+      <button type="button" data-action="idle">Rusthouding</button>
+      <button type="button" data-action="point">Aanwijzen</button>
+      <button type="button" data-action="celebrate">Vieren</button>
+      <button type="button" data-action="hide">Verdwijnen</button>
+    </section>
+
+    <aside class="status">
+      <strong>Veiligheidsstatus</strong>
+      <span>Geen koppeling met index.html, game.js, rondes, scores, audio of microfoon.</span>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+      const host = document.getElementById('host');
+      const lowerThird = document.getElementById('lower-third');
+      document.querySelector('.controls').addEventListener('click', (event) => {
+        const action = event.target.dataset.action;
+        if (!action) return;
+        host.className = 'host';
+        lowerThird.classList.remove('is-visible');
+        if (action === 'hide') return;
+        host.dataset.pose = action;
+        requestAnimationFrame(() => host.classList.add('is-visible'));
+        if (action !== 'idle') setTimeout(() => lowerThird.classList.add('is-visible'), 450);
+      });
+      host.classList.add('is-visible');
+    })();
+  </script>
+</body>
+</html>
