@@ -11,6 +11,7 @@ const BUNDEL_GELUIDEN = [
   {id:"dit_is_een_snackbar_mrmmhjv2", emoji:"🍟", naam:"Dit is een snackbar", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:4.2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/dit_is_een_snackbar_mrmmhjv2.mp3"},
   {id:"donkey_waffles_mrml96dg", emoji:"🫏", naam:"Donkey — Waffles!", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:2.6, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/donkey_waffles_mrml96dg.mp3"},
   {id:"he_meisje_mrmmfg3b", emoji:"🎬", naam:"Hé meisje", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:5, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/he_meisje_mrmmfg3b.mp3"},
+  {id:"hallo_allemaal_mrje23cy", emoji:"🎵", naam:"Hallo allemaal", cat:"performance", difficulty:3, fun:8, trimStart:0, trimEnd:8.4, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/hallo_allemaal_mrje23cy.mp3"},
   {id:"hehe_mrjdvz8j", emoji:"😏", naam:"Hehe", cat:"mensen", difficulty:3, fun:8, trimStart:0, trimEnd:1.4, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/hehe_mrjdvz8j.mp3"},
   {id:"its_me_mario_mrml7lyj", emoji:"🍄", naam:"It's me, Mario!", cat:"games", difficulty:3, fun:8, trimStart:0, trimEnd:2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/its_me_mario_mrml7lyj.mp3"},
   {id:"maaskantje_mrmmg7f4", emoji:"🏘️", naam:"Maaskantje", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:3.6, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/maaskantje_mrmmg7f4.mp3"},
@@ -19,12 +20,9 @@ const BUNDEL_GELUIDEN = [
   {id:"omg_mrjde62r", emoji:"😲", naam:"OMG!", cat:"mensen", difficulty:3, fun:8, trimStart:0, trimEnd:4.8, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/omg_mrjde62r.mp3"},
   {id:"paard_mrje6sdm", emoji:"🐴", naam:"Paard", cat:"dieren", difficulty:3, fun:8, trimStart:0, trimEnd:1.3, legendary:false, modifierAllowed:true, audioPath:"audio/eigen/paard_mrje6sdm.mp3"},
   {id:"pee_ka_pee_pikachu_mrml4u4s", emoji:"⚡", naam:"Pikachu", cat:"games", difficulty:3, fun:8, trimStart:0, trimEnd:2.4, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/pee_ka_pee_pikachu_mrml4u4s.mp3"},
-  {id:"scooby_mrml3gru", emoji:"🐶", naam:"Scooby-Doo", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:2.8, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/scooby_mrml3gru.mp3"},
   {id:"shy_shy_shy_sana_twice_mrje5mey", emoji:"🎶", naam:"Shy Shy Shy", cat:"performance", difficulty:3, fun:8, trimStart:0, trimEnd:3, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/shy_shy_shy_sana_twice_mrje5mey.mp3"},
   {id:"stitch_mrjdnbez", emoji:"👽", naam:"Stitch", cat:"films", difficulty:3, fun:8, trimStart:1.8, trimEnd:6.5, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/stitch_mrjdnbez.mp3"},
-  {id:"toad_wuh_wuh_mrml889y", emoji:"🍄", naam:"Toad", cat:"games", difficulty:3, fun:8, trimStart:0, trimEnd:2.3, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/toad_wuh_wuh_mrml889y.mp3"},
-  {id:"trump_mrjdg6fm", emoji:"🗣️", naam:"Donald Trump", cat:"mensen", difficulty:3, fun:8, trimStart:0, trimEnd:4.2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/trump_mrjdg6fm.mp3"},
-  {id:"villager_minecraft_mrml6w4v", emoji:"🟩", naam:"Minecraft Villager", cat:"games", difficulty:3, fun:8, trimStart:0, trimEnd:6.8, legendary:false, modifierAllowed:true, audioPath:"audio/eigen/villager_minecraft_mrml6w4v.mp3"}
+  {id:"trump_mrjdg6fm", emoji:"🗣️", naam:"Donald Trump", cat:"mensen", difficulty:3, fun:8, trimStart:0, trimEnd:4.2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/trump_mrjdg6fm.mp3"}
 ];
 ACTIEVE_GELUIDEN.push(...BUNDEL_GELUIDEN);
 
