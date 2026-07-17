@@ -118,4 +118,9 @@
     challengeTurnKey = '';
     hideChallenge();
   });
+
+  const sprint15 = document.createElement('script');
+  sprint15.src = 'assets/sprint15-director.js';
+  sprint15.defer = true;
+  document.head.appendChild(sprint15);
 })();
