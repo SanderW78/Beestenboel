@@ -1,0 +1,14 @@
+/* Sprint 15 — één presentatielaag tegelijk */
+#professor-decibel,
+.pd-player-intro,
+.pd-host-caption,
+.showmaster-overlay,
+.xxl-score-reveal,
+#live-standings{
+  display:none!important;
+}
+
+/* De ronde-intermissie is de enige plek waar Professor Decibel en de stand verschijnen. */
+.pd-round-intermission{
+  display:grid;
+}
