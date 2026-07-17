@@ -1,45 +1,69 @@
-/* Professor Decibel 2.0 — vervangt uitsluitend de oude presentatorweergave. */
+/* Professor Decibel 2.1 — presentatorgedrag en expressies. */
 .professor-decibel {
   position: fixed;
   right: clamp(12px, 2vw, 28px);
   bottom: clamp(12px, 2vw, 28px);
   z-index: 80;
-  width: min(440px, calc(100vw - 24px));
+  width: min(460px, calc(100vw - 24px));
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-columns: 164px minmax(0, 1fr);
   align-items: end;
   opacity: 0;
-  transform: translate3d(28px, 18px, 0) scale(.96);
+  transform: translate3d(115%, 14px, 0) scale(.94) rotate(1.5deg);
+  transform-origin: 100% 100%;
   pointer-events: none;
-  transition: opacity .24s ease, transform .34s cubic-bezier(.2,.8,.2,1);
+  filter: drop-shadow(0 22px 32px rgba(0,0,0,.28));
+  transition: opacity .22s ease, transform .58s cubic-bezier(.16,.84,.22,1);
+  will-change: transform, opacity;
 }
 
 .professor-decibel.zichtbaar {
   opacity: 1;
-  transform: translate3d(0,0,0) scale(1);
+  transform: translate3d(0,0,0) scale(1) rotate(0);
+  animation: pd-arrival-settle .72s cubic-bezier(.16,.84,.22,1) both;
 }
 
 .professor-decibel.afscheid {
   opacity: 0;
-  transform: translate3d(22px, 12px, 0) scale(.97);
+  transform: translate3d(72px, 12px, 0) scale(.96) rotate(1deg);
+  transition-duration: .38s;
 }
 
 .professor-decibel.links {
   right: auto;
   left: clamp(12px, 2vw, 28px);
+  transform: translate3d(-115%, 14px, 0) scale(.94) rotate(-1.5deg);
+  transform-origin: 0 100%;
+}
+
+.professor-decibel.links.zichtbaar {
+  transform: translate3d(0,0,0) scale(1) rotate(0);
 }
 
 .pd-avatar {
   position: relative;
   z-index: 2;
-  width: 168px;
+  width: 178px;
   aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 30px 30px 14px 14px;
+  border-radius: 32px 32px 16px 16px;
   border: 3px solid #f4b43b;
   background: #071528;
   box-shadow: 0 18px 48px rgba(0,0,0,.46), 0 0 0 1px rgba(255,255,255,.14) inset;
   transform-origin: 50% 100%;
+}
+
+.pd-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.22) 48%, transparent 61%);
+  transform: translateX(-140%);
+  pointer-events: none;
+}
+
+.professor-decibel.zichtbaar .pd-avatar::after {
+  animation: pd-suit-shine .9s .18s ease-out both;
 }
 
 .pd-avatar img {
@@ -48,18 +72,28 @@
   display: block;
   object-fit: cover;
   object-position: center top;
+  transition: opacity .16s ease, transform .32s ease;
 }
 
-/* De bestaande spelcode zet deze toestanden al. De afbeelding wisselt dus zonder extra JavaScript. */
+/* De spelcode zet deze toestanden al. Daardoor wisselt de presentator zonder extra spelkoppeling. */
 .professor-decibel.praat .pd-avatar img { content: url("professor/pose-goed-idee.webp"); }
 .professor-decibel.denkt .pd-avatar img { content: url("professor/pose-spannend.webp"); }
 .professor-decibel.juicht .pd-avatar img { content: url("professor/pose-knaller.webp"); }
-.professor-decibel[data-emotion="happy"] .pd-avatar img { content: url("professor/pose-fantastisch.webp"); }
-.professor-decibel[data-emotion="playful"] .pd-avatar img { content: url("professor/pose-volgende.webp"); }
+.professor-decibel[data-emotion="happy"] .pd-avatar img,
+.professor-decibel[data-emotion="warm"] .pd-avatar img { content: url("professor/pose-fantastisch.webp"); }
+.professor-decibel[data-emotion="playful"] .pd-avatar img,
+.professor-decibel[data-emotion="confident"] .pd-avatar img { content: url("professor/pose-volgende.webp"); }
+.professor-decibel[data-emotion="thinking"] .pd-avatar img,
+.professor-decibel[data-emotion="curious"] .pd-avatar img { content: url("professor/pose-spannend.webp"); }
+.professor-decibel[data-emotion="celebrate"] .pd-avatar img,
+.professor-decibel[data-emotion="excited"] .pd-avatar img { content: url("professor/pose-knaller.webp"); }
+.professor-decibel[data-emotion="dry"] .pd-avatar img,
+.professor-decibel[data-emotion="wise"] .pd-avatar img { content: url("professor/portret-groot.webp"); }
 
-.professor-decibel.juicht .pd-avatar {
-  animation: professor-decibel-bounce .55s ease both;
-}
+.professor-decibel.praat .pd-avatar { animation: pd-speaking 1.1s ease-in-out infinite; }
+.professor-decibel.denkt .pd-avatar { animation: pd-thinking 2.2s ease-in-out infinite; }
+.professor-decibel.juicht .pd-avatar { animation: pd-celebrate .72s cubic-bezier(.2,.9,.25,1.2) both; }
+.professor-decibel[data-emotion="playful"] .pd-avatar { animation: pd-point .65s ease both; }
 
 .pd-bubble {
   position: relative;
@@ -73,6 +107,21 @@
   background: linear-gradient(145deg, rgba(5,17,34,.98), rgba(12,35,63,.98));
   color: #fff;
   box-shadow: 0 18px 48px rgba(0,0,0,.42);
+  opacity: 0;
+  transform: translateX(18px) scale(.97);
+}
+
+.professor-decibel.zichtbaar .pd-bubble {
+  animation: pd-bubble-in .38s .24s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.professor-decibel.links .pd-bubble {
+  margin-left: 0;
+  margin-right: -12px;
+  padding: 18px 30px 16px 18px;
+  border-radius: 22px 0 0 22px;
+  order: -1;
+  transform: translateX(-18px) scale(.97);
 }
 
 .pd-bubble strong {
@@ -90,10 +139,37 @@
   line-height: 1.42;
 }
 
-@keyframes professor-decibel-bounce {
-  0% { transform: translateY(0) rotate(0); }
-  45% { transform: translateY(-10px) rotate(-1deg); }
-  100% { transform: translateY(0) rotate(0); }
+@keyframes pd-arrival-settle {
+  0% { opacity: 0; }
+  58% { opacity: 1; transform: translate3d(-8px,-4px,0) scale(1.015) rotate(-.35deg); }
+  78% { transform: translate3d(3px,1px,0) scale(.995) rotate(.15deg); }
+  100% { opacity: 1; transform: translate3d(0,0,0) scale(1) rotate(0); }
+}
+@keyframes pd-bubble-in {
+  from { opacity: 0; }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes pd-speaking {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-3px) rotate(-.35deg); }
+}
+@keyframes pd-thinking {
+  0%,100% { transform: rotate(0) translateY(0); }
+  50% { transform: rotate(-1deg) translateY(-2px); }
+}
+@keyframes pd-celebrate {
+  0% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-14px) scale(1.035) rotate(-1deg); }
+  72% { transform: translateY(2px) scale(.99) rotate(.35deg); }
+  100% { transform: translateY(0) scale(1) rotate(0); }
+}
+@keyframes pd-point {
+  0% { transform: translateX(0); }
+  45% { transform: translateX(-6px) rotate(-.6deg); }
+  100% { transform: translateX(0); }
+}
+@keyframes pd-suit-shine {
+  to { transform: translateX(140%); }
 }
 
 @media (max-width: 640px) {
@@ -101,16 +177,25 @@
     right: 8px;
     bottom: 8px;
     width: calc(100vw - 16px);
-    grid-template-columns: 100px minmax(0, 1fr);
+    grid-template-columns: 102px minmax(0, 1fr);
   }
   .professor-decibel.links { left: 8px; }
-  .pd-avatar { width: 112px; border-radius: 20px 20px 10px 10px; }
+  .pd-avatar { width: 114px; border-radius: 20px 20px 10px 10px; }
   .pd-bubble { min-height: 92px; margin-bottom: 8px; padding: 13px 13px 12px 22px; }
+  .professor-decibel.links .pd-bubble { padding: 13px 22px 12px 13px; }
   .pd-bubble strong { font-size: 1.05rem; }
   .pd-bubble span { font-size: .82rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .professor-decibel { transition: none; }
-  .professor-decibel.juicht .pd-avatar { animation: none; }
+  .professor-decibel,
+  .professor-decibel.zichtbaar,
+  .professor-decibel .pd-avatar,
+  .professor-decibel .pd-avatar::after,
+  .professor-decibel .pd-bubble {
+    animation: none !important;
+    transition: none !important;
+  }
+  .professor-decibel.zichtbaar { opacity: 1; transform: none; }
+  .professor-decibel.zichtbaar .pd-bubble { opacity: 1; transform: none; }
 }
