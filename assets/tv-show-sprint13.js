@@ -15,9 +15,16 @@
     screen.classList.add('s13-screen-enter');
   };
 
+  // Reageer uitsluitend op een echte overgang van verborgen naar zichtbaar.
+  // animateScreen() wijzigt zelf de class van het scherm; zonder deze
+  // toestandscontrole activeert de MutationObserver zichzelf eindeloos.
   screens.forEach((screen) => {
+    let wasVisible = visible(screen);
     new MutationObserver(() => {
-      if (visible(screen)) animateScreen(screen);
+      const isNowVisible = visible(screen);
+      const becameVisible = isNowVisible && !wasVisible;
+      wasVisible = isNowVisible;
+      if (becameVisible) animateScreen(screen);
     }).observe(screen, { attributes: true, attributeFilter: ['class'] });
   });
 
@@ -60,10 +67,13 @@
   }
 
   if (endScreen) {
+    let endWasVisible = visible(endScreen);
     new MutationObserver(() => {
-      if (visible(endScreen)) {
+      const endIsVisible = visible(endScreen);
+      if (endIsVisible && !endWasVisible) {
         window.setTimeout(() => confetti(85), 250);
       }
+      endWasVisible = endIsVisible;
     }).observe(endScreen, { attributes: true, attributeFilter: ['class'] });
   }
 
