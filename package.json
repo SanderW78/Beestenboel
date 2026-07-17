@@ -3,7 +3,7 @@
   "private": true,
   "description": "Party-spel: doe geluiden na en laat de computerjury oordelen",
   "scripts": {
-    "test": "node tests/rooktest.js",
+    "test": "node tests/rooktest.js && node tests/componenttest.js",
     "test:audio": "python3 tests/audiocheck.py"
   },
   "devDependencies": {
