@@ -2,10 +2,59 @@
   'use strict';
 
   const professor = document.getElementById('professor-decibel');
-  const originalNewTurn = typeof window.nieuweBeurt === 'function' ? window.nieuweBeurt : null;
+  const originalNewTurn = typeof nieuweBeurt === 'function' ? nieuweBeurt : null;
 
   // Deze uitbreiding mag de basisgame nooit blokkeren.
   if (!originalNewTurn || !professor || document.querySelector('.pd-round-intermission')) return;
+
+  // Centrale presentatieregel. Oude scripts mogen hun interne administratie blijven doen,
+  // maar tonen geen Professor of tussenstand meer tijdens individuele beurten.
+  const policyStyle = document.createElement('style');
+  policyStyle.textContent = `
+    #professor-decibel,
+    .pd-player-intro,
+    .pd-host-caption,
+    .showmaster-overlay,
+    .xxl-score-reveal,
+    #live-standings{display:none!important}
+    .pd-round-intermission{display:grid}
+  `;
+  document.head.appendChild(policyStyle);
+
+  try {
+    if (typeof ShowIntelligence !== 'undefined') {
+      if (typeof ShowIntelligence.showStandings === 'function') ShowIntelligence.showStandings = () => {};
+      if (typeof ShowIntelligence.react === 'function') ShowIntelligence.react = () => {};
+    }
+  } catch (_) {}
+
+  try {
+    if (typeof ProfessorDecibel !== 'undefined') {
+      [
+        'show', 'speak', 'turn', 'category', 'chaos', 'liveStart', 'liveLevel',
+        'liveStop', 'analyse', 'directedScoreReveal'
+      ].forEach((method) => {
+        if (typeof ProfessorDecibel[method] === 'function') ProfessorDecibel[method] = () => {};
+      });
+    }
+  } catch (_) {}
+
+  const hideLegacyLayers = () => {
+    professor.classList.remove(
+      'zichtbaar', 'pd-host-enter', 'pd-host-wave', 'pd-host-announce',
+      'pd-host-celebrate', 'pd-host-shocked', 'pd-host-bow'
+    );
+    professor.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('.pd-player-intro, .pd-host-caption, .showmaster-overlay, .xxl-score-reveal').forEach((element) => {
+      element.classList.remove('zichtbaar', 'is-visible', 'active', 'show');
+      element.setAttribute('aria-hidden', 'true');
+      element.style.pointerEvents = 'none';
+    });
+  };
+
+  hideLegacyLayers();
+  window.setTimeout(hideLegacyLayers, 0);
+  window.setTimeout(hideLegacyLayers, 1200);
 
   const intermission = document.createElement('section');
   intermission.className = 'pd-round-intermission';
@@ -31,16 +80,9 @@
   let continueRound = null;
   let showing = false;
 
-  const hideRegularProfessor = () => {
-    const classes = ['zichtbaar', 'pd-host-enter', 'pd-host-wave', 'pd-host-announce', 'pd-host-celebrate', 'pd-host-shocked', 'pd-host-bow'];
-    if (classes.some((name) => professor.classList.contains(name))) professor.classList.remove(...classes);
-    if (professor.getAttribute('aria-hidden') !== 'true') professor.setAttribute('aria-hidden', 'true');
-  };
-
   const getState = () => {
     try {
-      if (!window.S || !Array.isArray(window.S.spelers)) return null;
-      return window.S;
+      return typeof S !== 'undefined' && Array.isArray(S.spelers) ? S : null;
     } catch (_) {
       return null;
     }
@@ -67,7 +109,7 @@
   const openIntermission = (state) => new Promise((resolve) => {
     showing = true;
     continueRound = resolve;
-    hideRegularProfessor();
+    hideLegacyLayers();
     renderStanding(state);
     const completedRound = Number(state.ronde);
     const nextRound = completedRound + 1;
@@ -97,7 +139,7 @@
     if (event.key === 'Escape' && showing) closeIntermission();
   });
 
-  window.nieuweBeurt = async function sprint152NewTurn(...args) {
+  nieuweBeurt = async function sprint152NewTurn(...args) {
     try {
       const state = getState();
       const betweenRounds = !!state && Number(state.beurt) === 0 && Number(state.ronde) > 0 && Number(state.ronde) < Number(state.rondes);
@@ -107,9 +149,7 @@
       closeIntermission();
     }
 
-    hideRegularProfessor();
+    hideLegacyLayers();
     return originalNewTurn.apply(this, args);
   };
-
-  hideRegularProfessor();
 })();
