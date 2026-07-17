@@ -6,37 +6,15 @@
 <title>Beestenboel! — het nadoe-spel</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/game.css">
-<link rel="stylesheet" href="assets/professor-decibel-sprint12.css">
-<link rel="stylesheet" href="assets/tv-show-sprint13.css">
-<link rel="stylesheet" href="assets/tv-studio-phase1.css">
-<link rel="stylesheet" href="assets/showmaster-phase2.css">
-<link rel="stylesheet" href="assets/beestenboel-show-xxl.css">
-<link rel="stylesheet" href="assets/gameplay-sprint14.css">
-<link rel="stylesheet" href="assets/round-show-sprint15-2.css">
+<link rel="stylesheet" href="assets/presentation-core-cleanup.css">
 </head>
 <body>
 <aside id="live-standings" class="live-standings" aria-hidden="true"><h3>Live klassement</h3><div id="standing-list"></div></aside>
 <button id="audio-toggle" class="audio-toggle" aria-label="Geluid uitzetten" title="Showgeluid aan">🔊</button>
 <div class="show-lights"></div>
 <div id="fx-layer" class="fx-layer" aria-hidden="true"></div>
-<div id="show-overlay" class="show-overlay" aria-live="assertive" aria-hidden="true">
-  <div class="show-overlay-inner">
-    <div id="show-overlay-kicker" class="show-overlay-kicker"></div>
-    <div id="show-overlay-icon" class="show-overlay-icon">🎙️</div>
-    <h2 id="show-overlay-title" class="show-overlay-title"></h2>
-    <p id="show-overlay-sub" class="show-overlay-sub"></p>
-  </div>
-</div>
-<div id="professor-decibel" class="professor-decibel" aria-live="polite" aria-hidden="true">
-  <div class="pd-avatar" id="pd-avatar" aria-hidden="true">
-    <img src="professor-decibel.webp" alt="" decoding="async">
-    <div class="pd-face-rig" aria-hidden="true">
-      <i class="pd-eye left"></i><i class="pd-eye right"></i><i class="pd-mouth"></i>
-    </div>
-  </div>
-  <div class="pd-bubble"><strong>Professor Decibel</strong><span id="pd-text">Welkom in mijn geluidslaboratorium.</span></div>
-</div>
-<div class="category-world" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div id="show-overlay" class="show-overlay" aria-live="assertive" aria-hidden="true"></div>
+<div id="professor-decibel" class="professor-decibel" aria-hidden="true"></div>
 <div class="app">
   <section id="scherm-setup">
     <div class="setup-hero brand-hero">
@@ -158,14 +136,7 @@
 <script src="assets/game.js" defer></script>
 <script src="assets/audio-file-manifest.js" defer></script>
 <script src="assets/stability-fixes.js" defer></script>
-<script src="assets/professor-decibel-sprint12.js" defer></script>
-<script src="assets/tv-show-sprint13.js" defer></script>
-<script src="assets/tv-studio-phase1.js" defer></script>
-<script src="assets/showmaster-phase2.js" defer></script>
-<script src="assets/beestenboel-show-xxl.js" defer></script>
-<script src="assets/gameplay-sprint14.js" defer></script>
+<script src="assets/presentation-core-cleanup.js" defer></script>
 <script src="assets/audio-source-of-truth.js" defer></script>
-<script src="assets/game-flow-controller.js" defer></script>
-<script src="assets/round-show-sprint15-2.js" defer></script>
 </body>
 </html>
