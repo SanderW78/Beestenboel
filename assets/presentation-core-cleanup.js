@@ -4,21 +4,8 @@
   const noop = () => {};
   const resolved = () => Promise.resolve();
 
-  // Eén veilige presentatielaag. Oude gamecode mag deze functies blijven
-  // aanroepen, maar veroorzaakt geen pop-ups, dubbele standen of blokkades.
-  window.ProfessorDecibel = {
-    show: noop,
-    speak: noop,
-    turn: noop,
-    category: noop,
-    chaos: noop,
-    liveStart: noop,
-    liveLevel: noop,
-    liveStop: noop,
-    analyse: noop,
-    directedScoreReveal: noop
-  };
-
+  // Houd alleen oude presentatielagen uitgeschakeld. De actieve Professor
+  // Decibel wordt beheerd door de bestaande gamecode en zijn eigen DOM.
   window.ShowIntelligence = {
     reset: noop,
     beforeTurn: noop,
@@ -42,7 +29,6 @@
 
   const hideLegacyPresentation = () => {
     const selectors = [
-      '#professor-decibel',
       '#show-overlay',
       '.showmaster-overlay',
       '.xxl-score-reveal',
@@ -71,9 +57,8 @@
     hideLegacyPresentation();
   }
 
-  // Geen MutationObserver: deze cleanup moet passief en voorspelbaar blijven.
   window.BeestenboelPresentation = Object.freeze({
-    version: 'phase-1-cleanup',
+    version: 'professor-decibel-live',
     hideLegacyPresentation,
     ready: resolved
   });
