@@ -83,7 +83,7 @@ function bouwDom() {
       w.AudioContext = FakeAudioCtx;
       if (!w.matchMedia) w.matchMedia = () => ({ matches: false, addEventListener() {}, addListener() {} });
       w.fetch = async (u) => {
-        const p = String(u).replace('https://beestenboel.test/', '');
+        const p = String(u).replace('https://beestenboel.test/', '').split('?')[0];
         return { ok: fs.existsSync(chdir(p)), arrayBuffer: async () => new ArrayBuffer(64) };
       };
       w.__paginafouten = [];

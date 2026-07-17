@@ -588,9 +588,9 @@ async function laadDier(dier){
   if(dier.buffer) return dier;
   const ctx = audio();
   let ab;
-  if(dier.audioPath){ ab = await fetch(dier.audioPath).then(r=>{if(!r.ok) throw new Error("Audio ontbreekt"); return r.arrayBuffer();}); }
+  if(dier.audioPath){ ab = await fetch(dier.audioPath + AUDIO_VERSIE).then(r=>{if(!r.ok) throw new Error("Audio ontbreekt"); return r.arrayBuffer();}); }
   else if(dier.custom){ const blob=await customAudioBlob(dier.id); if(!blob) throw new Error("Eigen audio ontbreekt"); ab=await blob.arrayBuffer(); }
-  else { ab = await fetch("audio/basis/"+dier.id+".mp3").then(r=>{if(!r.ok) throw new Error("Audio ontbreekt"); return r.arrayBuffer();}); }
+  else { ab = await fetch("audio/basis/"+dier.id+".mp3" + AUDIO_VERSIE).then(r=>{if(!r.ok) throw new Error("Audio ontbreekt"); return r.arrayBuffer();}); }
   dier.buffer = await ctx.decodeAudioData(ab.slice(0));
   // Pas in de Geluidenstudio ingestelde trimpunten ook toe op vaste bundelgeluiden toe.
   if(Number.isFinite(dier.trimStart) || Number.isFinite(dier.trimEnd)){
@@ -617,12 +617,16 @@ function speelDier(dier){
 }
 
 /* ================= GELUIDSEFFECTEN (ingebakken studio-clips) ================= */
+// Versie van de audiobestanden. Ophogen wanneer de inhoud van bestaande
+// audio-URL's verandert (zoals bij de hernoeming van juli 2026), zodat
+// browsers met een oude kopie in de cache gedwongen opnieuw ophalen.
+const AUDIO_VERSIE = "?v=2";
 const SFX_NAMEN = ["glinster","tromgeroffel","applaus","plof","trombone","tik"];
 const sfxCache = {};
 async function sfxBuffer(naam){
   if(sfxCache[naam]) return sfxCache[naam];
   const ctx = audio();
-  const ab = await fetch("audio/sfx/"+naam+".mp3").then(r=>{if(!r.ok) throw new Error("SFX ontbreekt"); return r.arrayBuffer();});
+  const ab = await fetch("audio/sfx/"+naam+".mp3" + AUDIO_VERSIE).then(r=>{if(!r.ok) throw new Error("SFX ontbreekt"); return r.arrayBuffer();});
   const buf = await new Promise((res,rej)=> ctx.decodeAudioData(ab, res, rej));
   sfxCache[naam] = buf;
   return buf;
