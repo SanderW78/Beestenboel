@@ -17,7 +17,6 @@ const BUNDEL_GELUIDEN = [
   {id:"bunghole_mrjdrblm", emoji:"📺", naam:"Bunghole", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:6, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/bunghole_mrjdrblm.mp3"},
   {id:"dit_is_een_snackbar_mrmmhjv2", emoji:"🍟", naam:"Dit is een snackbar", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:4.2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/dit_is_een_snackbar_mrmmhjv2.mp3"},
   {id:"donkey_waffles_mrml96dg", emoji:"🫏", naam:"Donkey — Waffles!", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:2.6, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/donkey_waffles_mrml96dg.mp3"},
-  {id:"hallo_allemaal_mrje23cy", emoji:"🎵", naam:"Hallo allemaal", cat:"performance", difficulty:3, fun:8, trimStart:0, trimEnd:8.4, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/hallo_allemaal_mrje23cy.mp3"},
   {id:"he_meisje_mrmmfg3b", emoji:"🎬", naam:"Hé meisje", cat:"films", difficulty:3, fun:8, trimStart:0, trimEnd:5, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/he_meisje_mrmmfg3b.mp3"},
   {id:"hehe_mrjdvz8j", emoji:"😏", naam:"Hehe", cat:"mensen", difficulty:3, fun:8, trimStart:0, trimEnd:1.4, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/hehe_mrjdvz8j.mp3"},
   {id:"its_me_mario_mrml7lyj", emoji:"🍄", naam:"It's me, Mario!", cat:"games", difficulty:3, fun:8, trimStart:0, trimEnd:2, legendary:false, modifierAllowed:false, audioPath:"audio/eigen/its_me_mario_mrml7lyj.mp3"},
