@@ -1,0 +1,230 @@
+/* TV-showlaag — uitsluitend visuele presentatie bovenop bestaande show-hooks. */
+.show-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(61,167,255,.28), transparent 30%),
+    linear-gradient(180deg, rgba(2,8,20,.84), rgba(3,10,24,.96));
+  backdrop-filter: blur(10px);
+  transition: opacity .28s ease, visibility .28s ease;
+}
+
+.show-overlay.zichtbaar,
+.show-overlay.is-visible,
+.show-overlay.active,
+.show-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.show-overlay::before,
+.show-overlay::after {
+  content: "";
+  position: absolute;
+  top: -20vh;
+  bottom: -20vh;
+  width: 18vw;
+  min-width: 140px;
+  opacity: .72;
+  filter: blur(10px);
+  background: linear-gradient(180deg, transparent, rgba(74,181,255,.36) 45%, transparent 78%);
+  transform-origin: 50% 0;
+  animation: tv-show-sweep 4.2s ease-in-out infinite alternate;
+}
+
+.show-overlay::before { left: 6vw; transform: rotate(15deg); }
+.show-overlay::after { right: 6vw; transform: rotate(-15deg); animation-delay: -2.1s; }
+
+.show-overlay-inner {
+  position: relative;
+  z-index: 2;
+  width: min(860px, 92vw);
+  min-height: min(460px, 72vh);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(28px, 6vw, 68px);
+  overflow: hidden;
+  border: 2px solid rgba(245,184,62,.9);
+  border-radius: 36px;
+  background:
+    linear-gradient(145deg, rgba(8,27,54,.97), rgba(2,10,24,.98)),
+    radial-gradient(circle at 50% 0, rgba(255,255,255,.14), transparent 42%);
+  box-shadow: 0 30px 90px rgba(0,0,0,.65), 0 0 70px rgba(49,154,255,.22), inset 0 0 0 1px rgba(255,255,255,.08);
+  transform: translateY(24px) scale(.94);
+  transition: transform .48s cubic-bezier(.16,.84,.25,1);
+}
+
+.show-overlay.zichtbaar .show-overlay-inner,
+.show-overlay.is-visible .show-overlay-inner,
+.show-overlay.active .show-overlay-inner,
+.show-overlay.show .show-overlay-inner {
+  transform: translateY(0) scale(1);
+}
+
+.show-overlay-inner::before {
+  content: "BEESTENBOEL • LIVE • BEESTENBOEL • LIVE •";
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: 0;
+  padding: 9px 0 8px;
+  color: rgba(255,255,255,.72);
+  background: linear-gradient(90deg, #c7352d, #e24d3f, #c7352d);
+  font: 700 .72rem/1 Montserrat, sans-serif;
+  letter-spacing: .34em;
+  white-space: nowrap;
+}
+
+.show-overlay-kicker {
+  margin-bottom: 12px;
+  color: #f4b43b;
+  font: 800 clamp(.72rem, 1.5vw, .92rem)/1 Montserrat, sans-serif;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.show-overlay-icon {
+  display: grid;
+  place-items: center;
+  width: clamp(88px, 13vw, 128px);
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+  border: 3px solid rgba(244,180,59,.9);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 30%, #fff, #ffd577 35%, #d98a20 72%, #6f3508);
+  box-shadow: 0 0 0 10px rgba(244,180,59,.09), 0 14px 42px rgba(0,0,0,.42);
+  font-size: clamp(2.7rem, 7vw, 4.8rem);
+  animation: tv-show-icon-pop .7s cubic-bezier(.16,.84,.25,1) both;
+}
+
+.show-overlay-title {
+  margin: 0;
+  color: #fff;
+  font: 400 clamp(3.1rem, 10vw, 7.8rem)/.86 "Bebas Neue", sans-serif;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+  text-shadow: 0 5px 0 #942f27, 0 12px 32px rgba(0,0,0,.58);
+}
+
+.show-overlay-sub {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: rgba(255,255,255,.9);
+  font: 700 clamp(.9rem, 2.1vw, 1.25rem)/1.45 Montserrat, sans-serif;
+  letter-spacing: .04em;
+}
+
+.live-standings {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 65;
+  width: min(340px, calc(100vw - 36px));
+  padding: 16px;
+  border: 2px solid #f4b43b;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(5,17,34,.97), rgba(12,35,63,.97));
+  color: #fff;
+  box-shadow: 0 20px 55px rgba(0,0,0,.5);
+  transform: translateX(-115%);
+  opacity: 0;
+  transition: transform .42s cubic-bezier(.16,.84,.25,1), opacity .28s ease;
+}
+
+.live-standings.zichtbaar,
+.live-standings.is-visible,
+.live-standings.active,
+.live-standings.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.live-standings h3 {
+  margin: 0 0 10px;
+  color: #f4b43b;
+  font: 400 1.55rem/1 "Bebas Neue", sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+#standing-list { display: grid; gap: 8px; }
+#standing-list > * {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.08);
+  font-weight: 700;
+}
+#standing-list > *:first-child {
+  color: #071528;
+  background: linear-gradient(90deg, #ffd56a, #f4b43b);
+}
+
+#scherm-resultaat:not(.verborgen) .kaart {
+  position: relative;
+  overflow: hidden;
+}
+
+#scherm-resultaat:not(.verborgen) .kaart::before {
+  content: "SCORE REVEAL";
+  position: absolute;
+  top: 14px;
+  right: -44px;
+  width: 180px;
+  padding: 7px 0;
+  color: #fff;
+  background: #c7352d;
+  font: 800 .65rem/1 Montserrat, sans-serif;
+  letter-spacing: .14em;
+  text-align: center;
+  transform: rotate(35deg);
+}
+
+.score-groot { animation: tv-show-score-punch .62s cubic-bezier(.18,.8,.2,1) both; }
+
+@keyframes tv-show-sweep {
+  from { transform: rotate(10deg) translateX(-4vw); opacity: .35; }
+  to { transform: rotate(22deg) translateX(7vw); opacity: .85; }
+}
+
+@keyframes tv-show-icon-pop {
+  0% { opacity: 0; transform: scale(.45) rotate(-9deg); }
+  70% { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes tv-show-score-punch {
+  0% { opacity: 0; transform: scale(.55) rotate(-3deg); }
+  68% { opacity: 1; transform: scale(1.12) rotate(1deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@media (max-width: 640px) {
+  .show-overlay { padding: 12px; }
+  .show-overlay-inner { width: 100%; min-height: 58vh; border-radius: 24px; padding: 26px 18px 46px; }
+  .show-overlay-title { font-size: clamp(3rem, 17vw, 5.4rem); }
+  .show-overlay-sub { font-size: .88rem; }
+  .live-standings { top: 8px; left: 8px; width: calc(100vw - 16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .show-overlay::before,
+  .show-overlay::after,
+  .show-overlay-icon,
+  .score-groot { animation: none; }
+  .show-overlay,
+  .show-overlay-inner,
+  .live-standings { transition: none; }
+}
