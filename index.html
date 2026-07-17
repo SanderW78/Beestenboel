@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/game.css">
 <link rel="stylesheet" href="assets/presentation-core-cleanup.css">
+<link rel="stylesheet" href="assets/professor-decibel-live.css">
 </head>
 <body>
 <aside id="live-standings" class="live-standings" aria-hidden="true"><h3>Live klassement</h3><div id="standing-list"></div></aside>
@@ -14,7 +15,15 @@
 <div class="show-lights"></div>
 <div id="fx-layer" class="fx-layer" aria-hidden="true"></div>
 <div id="show-overlay" class="show-overlay" aria-live="assertive" aria-hidden="true"></div>
-<div id="professor-decibel" class="professor-decibel" aria-hidden="true"></div>
+<div id="professor-decibel" class="professor-decibel" aria-live="polite" aria-hidden="true">
+  <div class="pd-avatar" id="pd-avatar" aria-hidden="true">
+    <img src="assets/professor-decibel-studio.webp" alt="Professor Decibel in de Beestenboel-studio" decoding="async">
+  </div>
+  <div class="pd-bubble">
+    <strong>Professor Decibel</strong>
+    <span id="pd-text">Welkom bij Beestenboel.</span>
+  </div>
+</div>
 <div class="app">
   <section id="scherm-setup">
     <div class="setup-hero brand-hero">
