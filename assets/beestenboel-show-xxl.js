@@ -119,31 +119,22 @@
     setOverlay(scoreReveal, false);
   }
 
-  function onTurn() {
-    if (!visible(turnScreen)) return;
-    setTimeout(() => playerIntro(playerName?.textContent?.trim() || ''), 120);
-  }
-  function onResult() {
-    if (!visible(resultScreen)) return;
-    const run = () => revealScore(Number.parseInt(scoreNode?.textContent || '',10));
-    setTimeout(run, 450);
-  }
+  // De spelersintro en score-onthulling worden geregisseerd door
+  // showmaster-phase2.js (met stem en ondertiteling). De dubbele
+  // interstitial en de tromgeroffel-overlay van deze laag zijn daarom
+  // uitgeschakeld: één presentator per showmoment. De functies
+  // playerIntro/revealScore blijven beschikbaar voor hergebruik.
+  void playerIntro; void revealScore;
+
   function onEnd() {
     if (!visible(endScreen)) return;
     setTimeout(() => confetti(220), 300);
     document.body.classList.add('xxl-finale-mode');
   }
 
-  [turnScreen,resultScreen,endScreen].forEach((el) => {
-    if (!el) return;
-    new MutationObserver(() => {
-      if (el === turnScreen) onTurn();
-      if (el === resultScreen) onResult();
-      if (el === endScreen) onEnd();
-    }).observe(el,{attributes:true,attributeFilter:['class']});
-  });
-  playerName && new MutationObserver(onTurn).observe(playerName,{childList:true,subtree:true,characterData:true});
-  scoreNode && new MutationObserver(onResult).observe(scoreNode,{childList:true,subtree:true,characterData:true});
+  if (endScreen) {
+    new MutationObserver(onEnd).observe(endScreen,{attributes:true,attributeFilter:['class']});
+  }
 
   spinButton?.addEventListener('click', () => {
     document.body.classList.add('xxl-wheel-spinning');
