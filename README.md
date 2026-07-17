@@ -31,6 +31,18 @@ audio/sfx/               Studio-effecten (applaus, tromgeroffel, …)
 
 Open `contentmanager.html`, sleep een mp3 naar de studio, vul naam/emoji/categorie/moeilijkheid in en sla op. Het geluid staat direct in het spel — in dezelfde browser. Via exporteren/importeren verhuis je een bibliotheek naar een ander apparaat. Permanent meeleveren kan door het bestand in `audio/eigen/` te zetten en een regel toe te voegen aan `BUNDEL_GELUIDEN` in `assets/game.js`.
 
+## Testen
+
+Elke wijziging moet langs de testomgeving voordat hij naar main gaat:
+
+```
+npm install        # eenmalig
+npm test           # rooktest: statische integriteit + complete beurt-flow in jsdom
+npm run test:audio # audiocontrole: bestanden aanwezig en lang genoeg voor hun trimvenster
+```
+
+GitHub Actions draait beide tests automatisch bij iedere push en pull request; een rode status op main betekent niet uitrollen. Werk nooit rechtstreeks op main: gebruik feature branches met één doel per commit, en laat één sessie of persoon tegelijk de regie voeren over de repository.
+
 ## Draaien en deployen
 
 Het spel is statisch, maar laadt audio via `fetch` en heeft de microfoon nodig — open het dus via **http(s)**, niet via `file://`:

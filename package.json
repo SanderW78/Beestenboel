@@ -1,0 +1,12 @@
+{
+  "name": "beestenboel",
+  "private": true,
+  "description": "Party-spel: doe geluiden na en laat de computerjury oordelen",
+  "scripts": {
+    "test": "node tests/rooktest.js",
+    "test:audio": "python3 tests/audiocheck.py"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

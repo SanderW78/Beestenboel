@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Installeer dependencies
+        run: npm ci
+      - name: Rooktest (volledige beurt-flow)
+        run: npm test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audiocontrole (bestanden en trimvensters)
+        run: |
+          pip install --quiet mutagen
+          python3 tests/audiocheck.py
