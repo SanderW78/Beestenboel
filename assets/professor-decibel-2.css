@@ -1,0 +1,116 @@
+/* Professor Decibel 2.0 — vervangt uitsluitend de oude presentatorweergave. */
+.professor-decibel {
+  position: fixed;
+  right: clamp(12px, 2vw, 28px);
+  bottom: clamp(12px, 2vw, 28px);
+  z-index: 80;
+  width: min(440px, calc(100vw - 24px));
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  align-items: end;
+  opacity: 0;
+  transform: translate3d(28px, 18px, 0) scale(.96);
+  pointer-events: none;
+  transition: opacity .24s ease, transform .34s cubic-bezier(.2,.8,.2,1);
+}
+
+.professor-decibel.zichtbaar {
+  opacity: 1;
+  transform: translate3d(0,0,0) scale(1);
+}
+
+.professor-decibel.afscheid {
+  opacity: 0;
+  transform: translate3d(22px, 12px, 0) scale(.97);
+}
+
+.professor-decibel.links {
+  right: auto;
+  left: clamp(12px, 2vw, 28px);
+}
+
+.pd-avatar {
+  position: relative;
+  z-index: 2;
+  width: 168px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 30px 30px 14px 14px;
+  border: 3px solid #f4b43b;
+  background: #071528;
+  box-shadow: 0 18px 48px rgba(0,0,0,.46), 0 0 0 1px rgba(255,255,255,.14) inset;
+  transform-origin: 50% 100%;
+}
+
+.pd-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* De bestaande spelcode zet deze toestanden al. De afbeelding wisselt dus zonder extra JavaScript. */
+.professor-decibel.praat .pd-avatar img { content: url("professor/pose-goed-idee.webp"); }
+.professor-decibel.denkt .pd-avatar img { content: url("professor/pose-spannend.webp"); }
+.professor-decibel.juicht .pd-avatar img { content: url("professor/pose-knaller.webp"); }
+.professor-decibel[data-emotion="happy"] .pd-avatar img { content: url("professor/pose-fantastisch.webp"); }
+.professor-decibel[data-emotion="playful"] .pd-avatar img { content: url("professor/pose-volgende.webp"); }
+
+.professor-decibel.juicht .pd-avatar {
+  animation: professor-decibel-bounce .55s ease both;
+}
+
+.pd-bubble {
+  position: relative;
+  z-index: 1;
+  min-height: 116px;
+  margin-left: -12px;
+  margin-bottom: 14px;
+  padding: 18px 18px 16px 30px;
+  border: 2px solid #f4b43b;
+  border-radius: 0 22px 22px 0;
+  background: linear-gradient(145deg, rgba(5,17,34,.98), rgba(12,35,63,.98));
+  color: #fff;
+  box-shadow: 0 18px 48px rgba(0,0,0,.42);
+}
+
+.pd-bubble strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #f4b43b;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: .05em;
+}
+
+.pd-bubble span {
+  display: block;
+  font-size: .96rem;
+  line-height: 1.42;
+}
+
+@keyframes professor-decibel-bounce {
+  0% { transform: translateY(0) rotate(0); }
+  45% { transform: translateY(-10px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+@media (max-width: 640px) {
+  .professor-decibel {
+    right: 8px;
+    bottom: 8px;
+    width: calc(100vw - 16px);
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+  .professor-decibel.links { left: 8px; }
+  .pd-avatar { width: 112px; border-radius: 20px 20px 10px 10px; }
+  .pd-bubble { min-height: 92px; margin-bottom: 8px; padding: 13px 13px 12px 22px; }
+  .pd-bubble strong { font-size: 1.05rem; }
+  .pd-bubble span { font-size: .82rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .professor-decibel { transition: none; }
+  .professor-decibel.juicht .pd-avatar { animation: none; }
+}
