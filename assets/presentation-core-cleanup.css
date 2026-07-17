@@ -1,5 +1,4 @@
-/* Fase 1 — stabiele, opgeschoonde presentatielaag */
-#professor-decibel,
+/* Opgeschoonde presentatielaag: legacy overlays blijven uit, de nieuwe professor mag zichtbaar zijn. */
 #show-overlay,
 .showmaster-overlay,
 .xxl-score-reveal,
