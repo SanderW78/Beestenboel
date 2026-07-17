@@ -10,12 +10,11 @@
 <link rel="stylesheet" href="assets/tv-show-sprint13.css">
 <link rel="stylesheet" href="assets/tv-studio-phase1.css">
 <link rel="stylesheet" href="assets/showmaster-phase2.css">
-
+<link rel="stylesheet" href="assets/beestenboel-show-xxl.css">
 </head>
 <body>
 <aside id="live-standings" class="live-standings" aria-hidden="true"><h3>Live klassement</h3><div id="standing-list"></div></aside>
 <button id="audio-toggle" class="audio-toggle" aria-label="Geluid uitzetten" title="Showgeluid aan">🔊</button>
-
 <div class="show-lights"></div>
 <div id="fx-layer" class="fx-layer" aria-hidden="true"></div>
 <div id="show-overlay" class="show-overlay" aria-live="assertive" aria-hidden="true">
@@ -26,7 +25,6 @@
     <p id="show-overlay-sub" class="show-overlay-sub"></p>
   </div>
 </div>
-
 <div id="professor-decibel" class="professor-decibel" aria-live="polite" aria-hidden="true">
   <div class="pd-avatar" id="pd-avatar" aria-hidden="true">
     <img src="professor-decibel.webp" alt="" decoding="async">
@@ -37,10 +35,7 @@
   <div class="pd-bubble"><strong>Professor Decibel</strong><span id="pd-text">Welkom in mijn geluidslaboratorium.</span></div>
 </div>
 <div class="category-world" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
 <div class="app">
-
-  <!-- ===== SETUP ===== -->
   <section id="scherm-setup">
     <div class="setup-hero brand-hero">
       <div class="setup-kicker">🎙️ Professor Decibel presenteert</div>
@@ -76,16 +71,12 @@
     </div>
     <p class="credits">Audio uit open datasets, eigen uploads en publiek-domeinbronnen. Alleen voor gebruik binnen dit spel.</p>
   </section>
-
-  <!-- ===== BEURT ===== -->
   <section id="scherm-beurt" class="verborgen">
     <div class="chips" id="score-chips"></div>
     <div class="kaart show-card" id="show-card">
       <div class="show-instructie" id="show-instructie">Klaar voor de volgende opdracht?</div>
       <p class="sub display" id="ronde-label" style="font-size:1rem"></p>
       <div class="grote-naam" id="beurt-naam"></div>
-
-      <!-- fase 1: het rad -->
       <div id="rad-fase">
         <div class="rad-wrap">
           <svg viewBox="0 0 240 274" id="rad-svg">
@@ -99,8 +90,6 @@
           <p class="hint" id="rad-legenda"></p>
         </div>
       </div>
-
-      <!-- fase 2: het geluid -->
       <div id="geluid-fase" class="verborgen">
         <div class="podium">
           <span class="cat-label" id="cat-label"></span><br>
@@ -129,8 +118,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ===== RESULTAAT ===== -->
   <section id="scherm-resultaat" class="verborgen">
     <div class="kaart">
       <div class="res-geluid">
@@ -145,10 +132,7 @@
           <path d="M 15 120 A 100 100 0 0 1 215 120" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
           <path d="M 15 120 A 100 100 0 0 1 215 120" fill="none" stroke="var(--inkt)" stroke-width="22" stroke-linecap="round" stroke-dasharray="2 10" opacity=".25"/>
           <path d="M 165 33 A 100 100 0 0 1 215 120" fill="none" stroke="var(--gras)" stroke-width="22" stroke-linecap="round" opacity=".85"/>
-          <g class="naald" id="naald">
-            <line x1="115" y1="120" x2="115" y2="34" stroke="var(--rood)" stroke-width="7" stroke-linecap="round"/>
-            <circle cx="115" cy="120" r="12" fill="var(--inkt)"/>
-          </g>
+          <g class="naald" id="naald"><line x1="115" y1="120" x2="115" y2="34" stroke="var(--rood)" stroke-width="7" stroke-linecap="round"/><circle cx="115" cy="120" r="12" fill="var(--inkt)"/></g>
         </svg>
       </div>
       <div class="score-groot" id="score-getal">0</div>
@@ -160,31 +144,21 @@
         <div class="uitleg-rij"><span>⏱️ Tempo</span><div class="balk"><div id="balk-tempo"></div></div><b id="pct-tempo"></b></div>
       </div>
       <p class="hint verborgen" id="weging" style="text-align:center;margin-top:8px"></p>
-      <div class="resultaat-knoppen">
-        <button class="secundair" id="btn-terugluisteren">🎧 Jouw poging</button>
-        <button class="secundair" id="btn-origineel">🔊 Origineel</button>
-      </div>
+      <div class="resultaat-knoppen"><button class="secundair" id="btn-terugluisteren">🎧 Jouw poging</button><button class="secundair" id="btn-origineel">🔊 Origineel</button></div>
       <button id="btn-volgende" style="margin-top:12px">Volgende speler →</button>
     </div>
   </section>
-
-  <!-- ===== EINDE ===== -->
   <section id="scherm-einde" class="verborgen">
     <h1>🏆 De Gouden Geit</h1>
-    <div class="kaart">
-      <div class="eind-lijst" id="eind-lijst"></div>
-      <button id="btn-opnieuw" class="groen">Nog een potje!</button>
-    </div>
+    <div class="kaart"><div class="eind-lijst" id="eind-lijst"></div><button id="btn-opnieuw" class="groen">Nog een potje!</button></div>
   </section>
-
 </div>
-
 <script src="assets/game.js" defer></script>
 <script src="assets/stability-fixes.js" defer></script>
 <script src="assets/professor-decibel-sprint12.js" defer></script>
 <script src="assets/tv-show-sprint13.js" defer></script>
 <script src="assets/tv-studio-phase1.js" defer></script>
 <script src="assets/showmaster-phase2.js" defer></script>
-
+<script src="assets/beestenboel-show-xxl.js" defer></script>
 </body>
 </html>
