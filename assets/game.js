@@ -997,8 +997,15 @@ $("btn-luister").onclick = async ()=>{
   $("btn-luister").disabled = true;
   try{ await laadDier(S.dier); }
   catch(e){
-    $("mic-fout").classList.remove("verborgen");
-    $("mic-fout").textContent = "Dit geluid kon niet worden geladen. Kies opnieuw of probeer het later nog eens.";
+    const fout = $("mic-fout");
+    fout.classList.remove("verborgen");
+    fout.textContent = "Dit geluid kon niet worden geladen. ";
+    const b = document.createElement("button");
+    b.className = "secundair";
+    b.style.marginTop = "8px";
+    b.textContent = "🎲 Kies een ander geluid";
+    b.onclick = ()=>toonGeluidFase();   // trekt een verse opdracht binnen dezelfde categorie
+    fout.appendChild(b);
     $("btn-luister").disabled = false; return;
   }
   $("beest-emoji").classList.add("speelt");
