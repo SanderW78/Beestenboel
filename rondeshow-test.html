@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RondeShow — componenttest</title>
+<link rel="stylesheet" href="assets/components/ronde-show.css">
+<style>
+  /* Alleen opmaak voor deze testpagina; de component brengt zijn eigen stijl mee. */
+  body { font-family: system-ui, sans-serif; background: #0d0a22; color: #fff; margin: 0; padding: 32px 20px; }
+  main { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 1.3rem; }
+  p  { color: #b9b3d9; line-height: 1.5; }
+  label { display: block; margin: 14px 0 4px; font-size: 0.9rem; color: #b9b3d9; }
+  input, select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #453d7a; background: #171238; color: #fff; font-size: 1rem; }
+  button { margin-top: 18px; padding: 12px 18px; border: 0; border-radius: 12px; background: #f5b62e; color: #241b00; font-weight: 800; font-size: 1rem; cursor: pointer; }
+  #log { margin-top: 22px; padding: 12px; border-radius: 10px; background: #171238; font-family: monospace; font-size: 0.85rem; white-space: pre-line; min-height: 3em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>RondeShow — losstaande componenttest</h1>
+  <p>Deze pagina laadt uitsluitend de RondeShow-component: geen game.js, geen speldata. Alles wat je hieronder invult is nepdata, zodat de component in isolatie beoordeeld kan worden — precies zoals FASE 2 en 5 van het werkdocument voorschrijven.</p>
+
+  <label for="ronde">Zojuist afgeronde ronde</label>
+  <input id="ronde" type="number" min="1" max="9" value="2">
+
+  <label for="totaal">Totaal aantal rondes</label>
+  <input id="totaal" type="number" min="1" max="9" value="5">
+
+  <label for="spelers">Aantal spelers</label>
+  <select id="spelers">
+    <option>2</option><option>3</option><option selected>4</option>
+    <option>5</option><option>6</option><option>7</option><option>8</option>
+  </select>
+
+  <button id="toon" type="button">🎬 Toon tussenronde-show</button>
+
+  <div id="log">Nog geen shows vertoond.</div>
+</main>
+
+<script src="assets/components/ronde-show.js"></script>
+<script>
+'use strict';
+(() => {
+  const NAMEN = ['Sander', 'Marc', 'Anna', 'Jules', 'Femke', 'Bo', 'Iris', 'Teun'];
+  const log = document.getElementById('log');
+
+  document.getElementById('toon').addEventListener('click', async () => {
+    const aantal = Number(document.getElementById('spelers').value);
+    const standen = NAMEN.slice(0, aantal).map((naam) => ({
+      naam,
+      score: 40 + Math.floor(Math.random() * 260),
+    }));
+    const start = performance.now();
+    const resultaat = await RondeShow.show({
+      ronde: Number(document.getElementById('ronde').value),
+      totaalRondes: Number(document.getElementById('totaal').value),
+      standen,
+    });
+    const duur = ((performance.now() - start) / 1000).toFixed(1);
+    log.textContent = `Show gesloten via "${resultaat.dismissedBy}" na ${duur}s.\n`
+      + `Getoonde stand: ${standen.map((s) => `${s.naam} ${s.score}`).join(', ')}`;
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+/* RondeShow — alle selectors dragen het rs-voorvoegsel en raken niets anders. */
+
+.rs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255, 205, 84, 0.14), transparent 60%),
+    rgba(10, 8, 28, 0.86);
+  backdrop-filter: blur(3px);
+}
+
+.rs-overlay.rs-zichtbaar { display: flex; }
+
+.rs-kaart {
+  width: min(560px, 94vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 22px;
+  padding: 22px 22px 18px;
+  background: linear-gradient(165deg, #221a4e 0%, #171238 55%, #120d2c 100%);
+  border: 1px solid rgba(255, 205, 84, 0.35);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 205, 84, 0.06);
+  color: #fff;
+  transform: translateY(14px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1.2), opacity 0.28s ease;
+}
+
+.rs-zichtbaar .rs-kaart { transform: none; opacity: 1; }
+
+.rs-kop { text-align: center; margin-bottom: 14px; }
+
+.rs-kicker {
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffcd54;
+  opacity: 0.9;
+}
+
+.rs-titel { margin: 4px 0 0; font-size: 1.5rem; line-height: 1.2; }
+
+.rs-lijst { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+
+.rs-rij {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateX(-14px);
+  animation: rs-binnen 0.45s ease forwards;
+  animation-delay: var(--rs-vertraging, 0ms);
+}
+
+.rs-leider {
+  background: linear-gradient(90deg, rgba(255, 205, 84, 0.22), rgba(255, 205, 84, 0.08));
+  border-color: rgba(255, 205, 84, 0.5);
+}
+
+.rs-plek { font-size: 1.15rem; text-align: center; }
+.rs-naam { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rs-punten { font-variant-numeric: tabular-nums; color: #ffcd54; font-weight: 700; }
+
+.rs-prof {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.rs-prof-beeld {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 205, 84, 0.6);
+  background: #0d0a22;
+}
+
+.rs-ballon {
+  position: relative;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1c1740;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.rs-ballon::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 24px;
+  border: 7px solid transparent;
+  border-right-color: rgba(255, 255, 255, 0.94);
+  border-left: 0;
+}
+
+.rs-ballon strong { display: block; font-size: 0.78rem; color: #6b5bd6; letter-spacing: 0.04em; }
+
+.rs-knop {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: #241b00;
+  background: linear-gradient(180deg, #ffd968, #f5b62e);
+  box-shadow: 0 6px 0 #b57f0e, 0 12px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.rs-knop:hover { transform: translateY(-1px); }
+.rs-knop:active { transform: translateY(2px); box-shadow: 0 3px 0 #b57f0e, 0 8px 16px rgba(0, 0, 0, 0.3); }
+.rs-knop:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+@keyframes rs-binnen {
+  to { opacity: 1; transform: none; }
+}
+
+/* Verminderde beweging: alles direct zichtbaar, geen transities. */
+.rs-rustig .rs-kaart { transition: none; transform: none; opacity: 1; }
+.rs-rustig .rs-rij { animation: none; opacity: 1; transform: none; }
