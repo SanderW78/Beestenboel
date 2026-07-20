@@ -48,6 +48,22 @@ function statischeChecks() {
   const geladen = [...html.matchAll(/(?:src|href)="(assets\/[^"]+)"/g)].map((m) => m[1]);
   const kapot = geladen.filter((p) => !fs.existsSync(chdir(p)));
   check(`alle ${geladen.length} geladen assets bestaan`, kapot.length === 0);
+
+  // Afbeeldingen waar de geladen CSS naar verwijst (o.a. de professorposes)
+  // moeten bestaan; een hernoemde pose zou anders geruisloos kapotgaan.
+  const cssBestanden = geladen.filter((p) => p.endsWith('.css'));
+  const cssBeelden = new Set();
+  for (const cssPad of cssBestanden) {
+    const css = fs.readFileSync(chdir(cssPad), 'utf8');
+    for (const m of css.matchAll(/url\("?([^")]+\.(?:webp|png|jpg|svg))"?\)/g)) {
+      if (!m[1].startsWith('data:') && !m[1].startsWith('http')) {
+        cssBeelden.add(path.join(path.dirname(cssPad), m[1]));
+      }
+    }
+  }
+  const kapotCss = [...cssBeelden].filter((p) => !fs.existsSync(chdir(p)));
+  check(`alle ${cssBeelden.size} css-afbeeldingen bestaan`, kapotCss.length === 0);
+  if (kapotCss.length) console.log('    ontbrekend:', kapotCss.join(', '));
 }
 
 /* ---------- Deel 2: browser-stubs ---------- */
