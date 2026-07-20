@@ -96,8 +96,24 @@ function bouwDom() {
 
 const wacht = (ms) => new Promise((r) => setTimeout(r, ms));
 
+async function speelBeurt(w, $, label) {
+  $('btn-draai').click();
+  await wacht(9000);
+  check(`${label}: geluidsfase bereikt na raddraai`, !$('geluid-fase').classList.contains('verborgen'));
+  $('btn-luister').click();
+  await wacht(3000);
+  $('btn-opnemen').click();          // geen microfoon in jsdom: het spel valt terug op de jury
+  await wacht(2500);
+  const juryKnoppen = $('jury-knoppen').querySelectorAll('button');
+  check(`${label}: jury-fallback actief`, juryKnoppen.length >= 3);
+  juryKnoppen[2].click();
+  await wacht(8000);
+  check(`${label}: resultaat met score`, !$('scherm-resultaat').classList.contains('verborgen')
+    && /^\d+$/.test($('score-getal').textContent.trim()));
+}
+
 async function flowTest() {
-  console.log('Beurt-flow');
+  console.log('Beurt-flow met rondegrens');
   const dom = bouwDom();
   const w = dom.window;
   const $ = (id) => w.document.getElementById(id);
@@ -106,32 +122,32 @@ async function flowTest() {
   $('naam-input').value = 'Testspeler A'; $('btn-voeg-toe').click();
   $('naam-input').value = 'Testspeler B'; $('btn-voeg-toe').click();
   check('twee spelers aangemeld', w.document.querySelectorAll('#speler-lijst .speler-item').length === 2);
-  check('startknop actief', !$('btn-start').disabled);
+  [...w.document.querySelectorAll('.ronde-knop')].find((k) => k.dataset.r === '3').click();
 
   $('btn-start').click();
   await wacht(6000);
   check('beurtscherm zichtbaar na start', !$('scherm-beurt').classList.contains('verborgen'));
   check('professor spreekt', ($('pd-text').textContent || '').length > 0);
 
-  $('btn-draai').click();
-  await wacht(9000);
-  check('geluidsfase bereikt na raddraai', !$('geluid-fase').classList.contains('verborgen'));
-
-  $('btn-luister').click();
-  await wacht(3000);
-  $('btn-opnemen').click();          // geen microfoon in jsdom: het spel valt terug op de jury
-  await wacht(2500);
-  const juryKnoppen = $('jury-knoppen').querySelectorAll('button');
-  check('jury-fallback actief (geen microfoon)', juryKnoppen.length >= 3);
-  juryKnoppen[2].click();
-
-  await wacht(8000);
-  check('resultaatscherm zichtbaar', !$('scherm-resultaat').classList.contains('verborgen'));
-  check('score toegekend', /^\d+$/.test($('score-getal').textContent.trim()));
-
+  await speelBeurt(w, $, 'beurt 1');
   $('btn-volgende').click();
   await wacht(6000);
   check('speler twee aan de beurt', $('beurt-naam').textContent.includes('Testspeler B'));
+  check('geen tussenstand-show midden in de ronde', !w.document.querySelector('.rs-overlay.rs-zichtbaar'));
+
+  await speelBeurt(w, $, 'beurt 2');
+  $('btn-volgende').click();
+  await wacht(2500);
+  const rondeShow = w.document.querySelector('.rs-overlay');
+  check('tussenstand-show verschijnt op de rondegrens', !!rondeShow && rondeShow.classList.contains('rs-zichtbaar'));
+  check('titel meldt afgeronde ronde', rondeShow.querySelector('.rs-titel').textContent === 'Ronde 1 van 3 zit erop!');
+  check('tussenstand toont beide spelers', rondeShow.querySelectorAll('.rs-rij').length === 2);
+  rondeShow.querySelector('.rs-knop').click();
+
+  await wacht(6000);
+  check('ronde twee begint na de show', !$('scherm-beurt').classList.contains('verborgen')
+    && $('beurt-naam').textContent.includes('Testspeler A'));
+  check('rondelabel meldt ronde 2', ($('ronde-label').textContent || '').includes('2'));
   check('geen onafgevangen paginafouten', w.__paginafouten.length === 0);
   if (w.__paginafouten.length) console.log('    fouten:', w.__paginafouten.join(' | '));
 }
