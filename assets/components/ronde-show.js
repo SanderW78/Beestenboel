@@ -73,7 +73,7 @@
     prof.className = 'rs-prof';
     const beeld = document.createElement('img');
     beeld.className = 'rs-prof-beeld';
-    beeld.src = 'professor-decibel.webp';
+    beeld.src = 'assets/professor/portret.webp';
     beeld.alt = '';
     beeld.decoding = 'async';
     const ballon = document.createElement('div');

@@ -1263,6 +1263,17 @@ $("btn-volgende").onclick = async ()=>{
       await showMoment({kicker:"Professor Decibel rekent",icon:"🧮",title:"DE EINDSTAND",sub:"Wie wint de Gouden Geit?",duur:2300,type:"score"});
       toonEinde(); return;
     }
+    // Koppelpunt presentatielaag (FASE 6): tussenronde-show op de rondegrens.
+    // De engine dirigeert en wacht; de component toont alleen zijn eigen DOM
+    // en meldt zich klaar via de Promise. Zonder component loopt het spel
+    // ongewijzigd door.
+    if(window.RondeShow && typeof window.RondeShow.show === "function"){
+      await window.RondeShow.show({
+        ronde: S.ronde,
+        totaalRondes: S.rondes,
+        standen: S.spelers.map(sp=>({naam:sp.naam, score:sp.score}))
+      });
+    }
   }
   nieuweBeurt();
 };
